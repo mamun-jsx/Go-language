@@ -2,6 +2,11 @@ package main
 
 import "fmt"
 
+/* when to use array into goLang
+-- fixed size, that is predictable
+-- Memory optimization
+-- Constant time access 
+*/
 // numbered  sequence of specific length
 func main() {
 	var numbs [4]int

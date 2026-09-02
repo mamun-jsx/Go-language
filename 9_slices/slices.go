@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 )
 
 // it is an dynamic array
@@ -40,4 +41,17 @@ func main() {
 	numberss = append(numberss, 2)
 	fmt.Println(cap(numberss), "check capacity of this slice")
 	fmt.Println(numberss, "see full slice")
+
+	// *slice operator
+	var numb = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}
+
+	fmt.Println(numb[4:7], "checking index number") // 1st from index 0 to last input the number of index to stop as return
+
+	// slice
+	var nums1 = []int{1, 2}
+	var nums2 = []int{1, 2}
+
+	fmt.Println(slices.Equal(nums1, nums2), "check is they are Equal or not")
+	// slices is also a inbuilt system like fmt
+
 }

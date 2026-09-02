@@ -29,4 +29,6 @@ func main() {
 	for i := range 5 {
 		fmt.Println(i)
 	}
+	// ? ternary operator : I have to use normal if else 
+
 }

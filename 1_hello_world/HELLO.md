@@ -36,3 +36,17 @@ Go ল্যাঙ্গুয়েজে আগে থেকেই কিছু �
 6. **`copy()`**: একটি Slice-এর ডাটা অন্য একটি Slice-এ কপি করার জন্য।
 7. **`panic()`**: প্রোগ্রামে কোনো বড় ভুল হলে প্রোগ্রামকে সাথে সাথে বন্ধ করে দেওয়ার জন্য।
 8. **`recover()`**: `panic()` হওয়ার পর প্রোগ্রাম যেন ক্র্যাশ না করে, তাকে রক্ষা করার জন্য।
+
+---
+
+### Go-এর Reserved Keywords (যেগুলো Variable-এর নাম হিসেবে ব্যবহার করা যাবে না):
+Go ল্যাঙ্গুয়েজে ২৫টি Reserved Keyword আছে, যেগুলো Go-এর নিজস্ব কাজের জন্য সংরক্ষিত। আপনি কখনোই এগুলোকে ভেরিয়েবল, ফাংশন বা কনস্ট্যান্টের নাম হিসেবে ব্যবহার করতে পারবেন না।
+
+যেমন: `map`, `range`, `func`, `type`, `struct` ইত্যাদি।
+
+**সম্পূর্ণ তালিকা:**
+- `break`, `default`, `func`, `interface`, `select`
+- `case`, `defer`, `go`, `map`, `struct`
+- `chan`, `else`, `goto`, `package`, `switch`
+- `const`, `fallthrough`, `if`, `range`, `type`
+- `continue`, `for`, `import`, `return`, `var`

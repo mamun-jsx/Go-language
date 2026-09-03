@@ -12,4 +12,4 @@ This repository contains organized, sequential folders mapping out core Golang p
 
 It is tailor-made for developers transitioning from dynamically-typed environments (like React, Express, or Redux) who want to experience the fast compile-times and raw resource efficiency of Go without fighting nested Object-Oriented Framework complexities.
 
-----
+    ----

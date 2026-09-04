@@ -2,50 +2,45 @@ package main
 
 import "fmt"
 
-// ১. Payment ইন্টারফেস ডিক্লেয়ার করা
-type Payment interface {
-	pay(amount float32)
+// ১. Learner ইন্টারফেস তৈরি করা (কাজের তালিকা / শর্ত)
+// শর্ত হলো: যার ভেতরে Study() নামে মেথড আছে, সে-ই একজন Learner
+type Learner interface {
+	Study() string
 }
 
-// ২. Bkash স্ট্রাক্ট ডিক্লেয়ার করা
-type Bkash struct {
-	phoneNumber string
+// ২. দুটি আলাদা Struct তৈরি করা
+type SchoolStudent struct {
+	Name string
 }
 
-// ৩. Bkash এর জন্য Payment ইন্টারফেস ইমপ্লিমেন্ট করা
-func (b Bkash) pay(amount float32) {
-	fmt.Printf("Making payment of %.2f using bKash number: %s\n", amount, b.phoneNumber)
+type CollegeStudent struct {
+	Name string
 }
 
-// ৪. Card স্ট্রাক্ট ডিক্লেয়ার করা
-type Card struct {
-	cardNumber string
-	bankName   string
+// ৩. Struct-গুলোর নিজস্ব স্টাইলে Study() মেথড তৈরি করা
+func (s SchoolStudent) Study() string {
+	return s.Name + " স্কুলের বই মুখস্থ করছে।"
 }
 
-// ৫. Card এর জন্য Payment ইন্টারফেস ইমপ্লিমেন্ট করা
-func (c Card) pay(amount float32) {
-	fmt.Printf("Making payment of %.2f using %s Card: %s\n", amount, c.bankName, c.cardNumber)
+func (c CollegeStudent) Study() string {
+	return c.Name + " কলেজের প্রজেক্ট নিয়ে গবেষণা করছে।"
 }
 
-// ৬. পেমেন্ট প্রসেস করার জন্য একটি ফাংশন যা Payment ইন্টারফেস গ্রহণ করে
-func processPayment(p Payment, amount float32) {
-	p.pay(amount) // ডাইনামিকালি সঠিক pay() মেথড কল হবে
+// ৪. এমন একটি ফাংশন যা শুধু 'Learner' ইন্টারফেস চেনে, কোনো নির্দিষ্ট Struct নয়
+func StartLearning(l Learner) {
+	// সে জানে l-এর ভেতরে Study() আছেই (যেহেতু সে Learner শর্ত পূরণ করেছে)
+	fmt.Println(l.Study())
 }
 
 func main() {
-	// Bkash এর ইনস্ট্যান্স তৈরি
-	myBkash := Bkash{
-		phoneNumber: "01711000000",
-	}
+	// SchoolStudent এর ইনস্ট্যান্স তৈরি
+	schoolBoy := SchoolStudent{Name: "রহিম"}
+	
+	// CollegeStudent এর ইনস্ট্যান্স তৈরি
+	collegeBoy := CollegeStudent{Name: "করিম"}
 
-	// Card এর ইনস্ট্যান্স তৈরি
-	myCard := Card{
-		cardNumber: "1234-5678-9012",
-		bankName:   "DBBL",
-	}
-
-	// processPayment ফাংশনে বিভিন্ন পেমেন্ট মেথড পাঠানো হচ্ছে
-	processPayment(myBkash, 500.50)
-	processPayment(myCard, 1200.00)
+	// দুজনেই Learner ইন্টারফেসের শর্ত পূরণ করেছে (দুজনেরই Study মেথড আছে)
+	// তাই দুজনেই StartLearning-এ ঢুকতে পারবে
+	StartLearning(schoolBoy)
+	StartLearning(collegeBoy)
 }

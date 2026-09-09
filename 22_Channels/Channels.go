@@ -24,12 +24,37 @@ func sum(result chan int, num1 int, num2 int) {
 
 }
 
+func task(done chan bool) {
+	defer func() {
+		done <- true
+	}()
+	fmt.Println("processing ")
+
+}
+
 func main() {
 
-	result := make(chan int)
-	go sum(result, 4, 5)
-	showResult := <-result
-	fmt.Println("show result ", showResult)
+	// without blocking 
+
+	emailChan:=make(chan string, 100)
+	
+
+	emailChan <- "1@gmail.com"
+	emailChan <- "2@gmail.com"
+	emailChan <- "3@gmail.com"
+	emailChan <- "4@gmail.com"
+
+	fmt.Println(<-emailChan)	
+	fmt.Println(<-emailChan)	
+
+
+
+
+
+	// result := make(chan int)
+	// go sum(result, 4, 5)
+	// showResult := <-result
+	// fmt.Println("show result ", showResult)
 	// make number channels
 	numbChan := make(chan int)
 	go processNumb(numbChan)
@@ -38,7 +63,13 @@ func main() {
 	// for {
 	// 	numbChan <- rand.Intn(100)
 	// }
+
+	// boolChannels
+	done := make(chan bool)
+	go task(done)
+	<-done // block the program until the task is done
 }
+
 
 // channels are blocking
 // when 2nd side not ready to receive data then it will wait for it

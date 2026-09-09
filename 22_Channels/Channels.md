@@ -135,3 +135,88 @@ func main() {
 10 is Even
 15 is Odd
 ```
+
+---
+
+## Buffered vs Unbuffered Channels
+
+### Unbuffered Channels (Blocking)
+By default, channels are **unbuffered** (e.g., `make(chan int)`). They have a capacity of 0. 
+- **Sender Blocking**: A sender blocks until a receiver is ready to receive the value.
+- **Receiver Blocking**: A receiver blocks until a sender sends a value.
+- This creates a strict synchronization point between goroutines.
+
+### Buffered Channels (Non-blocking up to capacity)
+You can create a **buffered channel** by providing a capacity (e.g., `make(chan string, 4)`).
+- **Non-blocking Sends**: A sender can send data to a buffered channel without blocking, *as long as the buffer is not full*.
+- **Blocking Sends**: The sender only blocks if the buffer is completely full.
+- **Blocking Receives**: The receiver only blocks if the buffer is completely empty.
+
+**Code Example:**
+```go
+// Creates a buffered channel with a capacity of 4
+emailChan := make(chan string, 4)
+
+// We can send up to 4 items without a receiver being ready!
+emailChan <- "1@gmail.com"
+emailChan <- "2@gmail.com"
+emailChan <- "3@gmail.com"
+emailChan <- "4@gmail.com"
+// emailChan <- "5@gmail.com" // This 5th send would BLOCK if there was no receiver
+```
+
+---
+
+## Multiple Channels and the `select` Statement
+
+When working with multiple channels concurrently, you can use the `select` statement. It looks like a `switch` statement, but it is specifically designed for channel operations.
+
+### Theory
+- `select` lets a goroutine wait on multiple channel operations.
+- It blocks until one of its `case` statements can run, then it executes that case.
+- If multiple cases are ready at the same time, it chooses one randomly.
+- It prevents deadlocks that could occur if you tried to read from multiple channels sequentially when one of them might be empty.
+
+### Code Example
+```go
+package main
+
+import "fmt"
+
+func main() {
+	chan1 := make(chan int)
+	chan2 := make(chan string)
+
+	// Goroutine 1 sends to chan1
+	go func() {
+		chan1 <- 10
+	}()
+
+	// Goroutine 2 sends to chan2
+	go func() {
+		chan2 <- "pong"
+	}()
+
+	// We expect 2 values total, so we loop twice
+	for i := 0; i < 2; i++ {
+		select {
+		case chan1Value := <-chan1:
+			fmt.Println("Received chan1 value:", chan1Value)
+		case chan2Value := <-chan2:
+			fmt.Println("Received chan2 value:", chan2Value)
+		}
+	}
+}
+```
+
+### Output
+Because the goroutines run concurrently, the output order is non-deterministic (it depends on which goroutine finishes first). It could be:
+```text
+Received chan2 value: pong
+Received chan1 value: 10
+```
+*or*
+```text
+Received chan1 value: 10
+Received chan2 value: pong
+```
